@@ -1,0 +1,54 @@
+<h2>{{ title }}</h2>
+<form nz-form [formGroup]="form" nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label nzRequired>Заголовок</nz-form-label>
+    <nz-form-control [nzErrorTip]="errorTpl">
+      <input nz-input formControlName="title" placeholder="Введите заголовок" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired>Текст заметки</nz-form-label>
+    <nz-form-control [nzErrorTip]="errorTpl">
+      <nz-textarea-count [nzMaxCharacterCount]="2000">
+        <textarea
+          formControlName="text"
+          nz-input
+          rows="2"
+          placeholder="Введите текст"
+        ></textarea>
+      </nz-textarea-count>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label>Тэги</nz-form-label>
+    <nz-form-control>
+      <nz-select
+        nzMode="multiple"
+        formControlName="tagIds"
+        nzPlaceHolder="Укажите тэги для данной заметки"
+      >
+        <nz-option
+          *ngFor="let item of tags"
+          [nzValue]="item.id"
+          [nzLabel]="item.name"
+          nzMode="multiple"
+          nzShowSearch
+          nzAllowClear
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<button nz-button nzType="primary" (click)="save()" [disabled]="!form.valid">
+  Сохранить
+</button>
+
+<ng-template #errorTpl let-control>
+  <ng-container *ngIf="control.hasError('required')">
+    Поле обязательно для заполнения
+  </ng-container>
+  <ng-container *ngIf="control.hasError('maxlength')">
+    Превышена максимально-допустимая длина
+  </ng-container>
+</ng-template>

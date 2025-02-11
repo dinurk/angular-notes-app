@@ -1,0 +1,23 @@
+nz-pagination {
+  width: calc(100% - 64px);
+  text-align: center;
+}
+nz-space,
+nz-date-picker {
+  width: 100%;
+}
+
+nz-card {
+  outline: solid 1px #cfcfcf;
+}
+
+.selected-item {
+  outline: solid 1px #1890ff;
+  transform: scale(1.02);
+  transition-duration: 0.1s;
+  background-color: #efefef;
+}
+
+.card-text {
+  word-wrap: break-word;
+}

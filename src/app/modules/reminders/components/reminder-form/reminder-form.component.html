@@ -1,0 +1,107 @@
+<nz-space nzDirection="vertical" [nzSize]="16">
+  <div *nzSpaceItem nz-row>
+    <div nz-col>
+      <h2>Установка напоминания</h2>
+    </div>
+    <div nz-col nzFlex="auto"></div>
+    <div nz-col>
+      <!-- Кнопки перехода по шагам формы -->
+      <div>
+        <nz-space>
+          <ng-container *nzSpaceItem>
+            <button
+              nz-button
+              nzType="default"
+              (click)="back()"
+              *ngIf="currentStep > 0"
+            >
+              <span>Назад</span>
+            </button>
+          </ng-container>
+
+          <ng-container *nzSpaceItem>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="next()"
+              *ngIf="currentStep < 1"
+              [disabled]="selectedNote === null"
+            >
+              <span>Далее</span>
+            </button>
+          </ng-container>
+
+          <ng-container *nzSpaceItem>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="save()"
+              *ngIf="currentStep === 1"
+              [disabled]="!reminderDate"
+            >
+              <span>Сохранить</span>
+            </button>
+          </ng-container>
+        </nz-space>
+      </div>
+    </div>
+  </div>
+
+  <!-- Шаги формы -->
+  <nz-steps *nzSpaceItem [nzCurrent]="currentStep">
+    <nz-step nzTitle="Выберите заметку"> </nz-step>
+    <nz-step nzTitle="Укажите дату и время"></nz-step>
+  </nz-steps>
+
+  <ng-container *nzSpaceItem>
+    <!-- Шаг 0 формы - выбор заметок для установки напоминаний -->
+    <ng-container *ngIf="currentStep === 0">
+      <nz-space nzDirection="vertical" [nzSize]="16">
+        <div *nzSpaceItem nz-row [nzGutter]="[16, 16]">
+          <div
+            nz-col
+            nzSpan="24"
+            *ngFor="let item of notes$ | async; trackBy: trackByFn"
+          >
+            <nz-card
+              [nzTitle]="item.title"
+              (click)="setectNote(item)"
+              [ngClass]="{
+                'selected-item': selectedNote?.id === item.id
+              }"
+            >
+              <span class="card-text">{{ item.text | truncate }}</span>
+            </nz-card>
+          </div>
+        </div>
+        <nz-pagination
+          *nzSpaceItem
+          [nzPageIndex]="(paginationData$ | async)!.currentPage"
+          [nzTotal]="(paginationData$ | async)!.total"
+          [nzPageSize]="(paginationData$ | async)!.perPage"
+          (nzPageIndexChange)="onChangePageNumber($event)"
+        ></nz-pagination>
+      </nz-space>
+    </ng-container>
+
+    <!-- Шаг 1 формы - установка даты и времени напоминаний -->
+    <ng-container *ngIf="currentStep === 1">
+      <form nz-form nzLayout="vertical">
+        <nz-form-item>
+          <nz-form-label nzRequired>
+            Укажите дату и время напоминания
+          </nz-form-label>
+          <nz-form-control>
+            <nz-date-picker
+              nzShowTime
+              nzFormat="dd.MM.yyyy HH:mm:ss"
+              [(ngModel)]="reminderDate"
+              [ngModelOptions]="{ standalone: true }"
+              required
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+  </ng-container>
+</nz-space>

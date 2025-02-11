@@ -1,0 +1,20 @@
+<div nz-row>
+  <div nz-col>
+    <h2 class="card-text">{{ note.title }}</h2>
+  </div>
+  <div nz-col nzFlex="auto"></div>
+  <div nz-col>
+    <nz-space [nzSize]="16">
+      <button *nzSpaceItem nz-button nzDanger (click)="onDeleteClick()">
+        <span nz-icon nzType="delete"></span>
+        Удалить
+      </button>
+      <button *nzSpaceItem nz-button (click)="editNote()">
+        <span nz-icon nzType="edit"></span>
+        Редактировать
+      </button>
+    </nz-space>
+  </div>
+</div>
+
+<p class="card-text">{{ note.text }}</p>

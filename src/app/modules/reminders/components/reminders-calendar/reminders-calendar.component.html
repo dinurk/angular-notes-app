@@ -1,0 +1,9 @@
+<nz-calendar [(ngModel)]="selectedDate" (nzValueChange)="refresh()">
+  <ul class="reminder-badge" *nzDateCell="let date">
+    <ng-container *ngIf="hasRemindersForDate(date)">
+      <li *ngFor="let item of getRemindersForDate(date)">
+        <nz-badge nzStatus="processing" [nzText]="item.title"></nz-badge>
+      </li>
+    </ng-container>
+  </ul>
+</nz-calendar>

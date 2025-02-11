@@ -1,0 +1,41 @@
+<nz-space nzDirection="vertical" [nzSize]="16">
+  <nz-alert
+    *nzSpaceItem
+    nzType="warning"
+    nzMessage="Информация"
+    [nzDescription]="descriptionTemplate"
+    nzShowIcon
+  ></nz-alert>
+  <nz-alert
+    *nzSpaceItem
+    nzType="info"
+    nzMessage="Дополнительная информация"
+    [nzDescription]="additionalInfoTemplate"
+    nzShowIcon
+  ></nz-alert>
+</nz-space>
+
+<ng-template #descriptionTemplate>
+  <p>В данном окне будут отображаться:</p>
+  <ul>
+    <li>Форма добавления заметки - переход нажатием кнопки "Добавить"</li>
+    <li>Окно просмотра заметки - переход при нажатии на заметку</li>
+    <li>Форма изменения заметки - переход из окна просмотра заметки</li>
+  </ul>
+</ng-template>
+
+<ng-template #additionalInfoTemplate>
+  <ul>
+    <li>
+      Заметки, отображаемые в левой половине экрана можно группировать нажатием
+      клавиши ctrl
+    </li>
+    <li>
+      Напоминаия можно добавить на вкладке "Напоминания", когда есть
+      <b>хотя бы одна заметка</b>
+    </li>
+    <li>
+      Установленные напоминания отображаются в календаре на вкладке "Напоминаия"
+    </li>
+  </ul>
+</ng-template>

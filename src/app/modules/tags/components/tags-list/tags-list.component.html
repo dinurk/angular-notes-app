@@ -1,0 +1,42 @@
+<div nz-row nzAlign="middle" [nzGutter]="[16, 16]">
+  <nz-col>
+    <h2>Тэги</h2>
+  </nz-col>
+  <nz-col nzFlex="auto"></nz-col>
+
+  <nz-col>
+    <button nz-button nzType="primary" (click)="addTag()">
+      <span nz-icon nzType="plus"></span>
+      Добавить
+    </button>
+  </nz-col>
+</div>
+
+<nz-space nzDirection="vertical" [nzSize]="16">
+  <nz-table
+    nzShowPagination="false"
+    *nzSpaceItem
+    #tagsTable
+    [nzData]="(tags$ | async)!"
+  >
+
+    <tbody>
+      <tr *ngFor="let item of tagsTable.data; trackBy: trackByFn">
+        <td
+          (click)="selectTag(item.id)"
+          [ngClass]="{ 'selected-item': item.id === selectedTagId }"
+        >
+          {{ item.name }}
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <nz-pagination
+    *nzSpaceItem
+    [nzPageIndex]="(paginationData$ | async)!.currentPage"
+    [nzTotal]="(paginationData$ | async)!.total"
+    [nzPageSize]="(paginationData$ | async)!.perPage"
+    (nzPageIndexChange)="onChangePageNumber($event)"
+  ></nz-pagination>
+</nz-space>

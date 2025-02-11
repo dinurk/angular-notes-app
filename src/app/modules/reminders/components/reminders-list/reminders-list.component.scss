@@ -1,0 +1,16 @@
+nz-card {
+  outline: solid 1px #cfcfcf;
+}
+
+nz-space {
+  width: 100%;
+}
+
+nz-pagination {
+  width: calc(100% - 64px);
+  text-align: center;
+}
+
+.card-text {
+  word-wrap: break-word;
+}

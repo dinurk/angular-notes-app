@@ -1,0 +1,18 @@
+nz-table {
+  outline: solid 1px #cfcfcf;
+  width: 100%;
+}
+
+nz-space {
+  width: 100%;
+}
+
+nz-pagination {
+  text-align: center;
+}
+
+.selected-item {
+  border: solid 3px #1890ff;
+  border-radius: 3px;
+  transition-duration: 0.1s;
+}

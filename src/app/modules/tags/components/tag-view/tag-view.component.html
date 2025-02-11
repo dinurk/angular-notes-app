@@ -1,0 +1,20 @@
+<div nz-row nzAlign="middle">
+  <div nz-col>
+    <h2>Тэг</h2>
+  </div>
+  <div nz-col nzFlex="auto"></div>
+  <div nz-col>
+    <nz-space [nzSize]="16">
+      <button *nzSpaceItem nz-button (click)="editTag()">
+        <span nz-icon nzType="edit"></span>
+        Редактировать
+      </button>
+      <button *nzSpaceItem nz-button (click)="onDeleteClick()" nzDanger>
+        <span nz-icon nzType="delete"></span>
+        Удалить
+      </button>
+    </nz-space>
+  </div>
+</div>
+
+<p>{{ tag.name }}</p>

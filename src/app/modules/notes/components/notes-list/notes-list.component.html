@@ -1,0 +1,118 @@
+<div nz-row nzAlign="middle" [nzGutter]="[16, 16]">
+  <nz-col>
+    <h2>Мои заметки</h2>
+  </nz-col>
+  <nz-col nzFlex="auto"></nz-col>
+
+  <nz-col>
+    <button nz-button nzType="primary" (click)="addNote()">
+      <span nz-icon nzType="plus"></span>
+      Добавить
+    </button>
+  </nz-col>
+</div>
+
+<div *ngIf="(notes$ | async)!.length === 0">
+  <nz-alert
+    nzType="warning"
+    nzMessage="Заметки не добавлены"
+    nzDescription='Нажмите кнопку "Добавить" для создания заметки.'
+    nzShowIcon
+  ></nz-alert>
+</div>
+
+<nz-space nzDirection="vertical" [nzSize]="16">
+  <div *nzSpaceItem nz-row [nzGutter]="[16, 16]">
+    <div
+      nz-col
+      nzXs="24"
+      nzSm="24"
+      nzXl="12"
+      nzXXl="8"
+      *ngFor="let item of notes$ | async; trackBy: trackByFn"
+    >
+      <ng-template #extraTemplate>
+        <nz-space>
+          <ng-container *nzSpaceItem>
+            <span
+              *ngIf="item.reminderDateTime"
+              nz-icon
+              nzType="bell"
+              nzTheme="outline"
+              nz-tooltip
+              [nzTooltipTitle]="tooltipTitleTemplate"
+            ></span>
+          </ng-container>
+          <ng-container *nzSpaceItem>
+            <label
+              *ngIf="checkedNotesIds.size > 0"
+              nz-checkbox
+              [nzChecked]="checkedNotesIds.has(item.id)"
+              (nzCheckedChange)="onNoteChecked(item.id)"
+            ></label>
+          </ng-container>
+        </nz-space>
+      </ng-template>
+
+      <ng-template #tooltipTitleTemplate>
+        <span
+          >Напоминание установлено на:
+          {{ item.reminderDateTime | utcToLocal }}</span
+        >
+      </ng-template>
+
+      <ng-template #noteTagsTemplate>
+        <nz-tag *ngFor="let tag of item.tags" [nzColor]="'cyan'">{{
+          tag.name
+        }}</nz-tag>
+      </ng-template>
+
+      <nz-card
+        [nzExtra]="extraTemplate"
+        [nzTitle]="item.title"
+        (click)="onNoteCardClick(item.id, $event)"
+        [ngClass]="{
+          'selected-item':
+            item.id === selectedNoteId,  
+          'checked-item':checkedNotesIds.has(item.id),
+        }"
+        [nzActions]="item.tags ? [noteTagsTemplate] : []"
+      >
+        <span class="card-text">{{ item.text | truncate : 50 }}</span>
+      </nz-card>
+    </div>
+  </div>
+
+  <nz-pagination
+    *nzSpaceItem
+    [nzPageIndex]="(paginationData$ | async)!.currentPage"
+    [nzTotal]="(paginationData$ | async)!.total"
+    [nzPageSize]="(paginationData$ | async)!.perPage"
+    (nzPageIndexChange)="onChangePageNumber($event)"
+  ></nz-pagination>
+</nz-space>
+
+<nz-alert
+  class="multiselect-tooltip"
+  *ngIf="checkedNotesIds.size > 0"
+  nzType="info"
+  nzMessage="Выделено заметок: {{ checkedNotesIds.size }}"
+  [nzAction]="alertActionsTemplate"
+></nz-alert>
+
+<ng-template #alertActionsTemplate>
+  <nz-space nzDirection="horizontal">
+    <button *nzSpaceItem nz-button nzType="default" (click)="clearChecked()">
+      Снять выделение
+    </button>
+    <button
+      *nzSpaceItem
+      nz-button
+      nzType="default"
+      nzDanger
+      (click)="onDeleteClick()"
+    >
+      Удалить
+    </button>
+  </nz-space>
+</ng-template>

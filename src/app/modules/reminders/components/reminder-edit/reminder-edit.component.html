@@ -1,0 +1,29 @@
+<div nz-row>
+  <div nz-col><h2>Редактировать напоминание</h2></div>
+  <div nz-col nzFlex="auto"></div>
+  <div nz-col>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="save()"
+      [disabled]="!reminderDate"
+    >
+      <span>Сохранить</span>
+    </button>
+  </div>
+</div>
+
+<form nz-form nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label nzRequired> Укажите дату и время напоминания </nz-form-label>
+    <nz-form-control>
+      <nz-date-picker
+        nzShowTime
+        nzFormat="dd.MM.yyyy HH:mm:ss"
+        [(ngModel)]="reminderDate"
+        [ngModelOptions]="{ standalone: true }"
+        required
+      ></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+</form>

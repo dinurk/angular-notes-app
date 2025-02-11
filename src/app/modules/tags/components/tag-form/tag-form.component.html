@@ -1,0 +1,32 @@
+<div nz-row>
+  <div nz-col>
+    <h2>{{ title }}</h2>
+  </div>
+  <div nz-col nzFlex="auto"></div>
+  <div nz-col>
+    <button nz-button nzType="primary" (click)="save()" [disabled]="!tagName">
+      <span>Сохранить</span>
+    </button>
+  </div>
+</div>
+
+<form nz-form nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label nzRequired> Наименование тэга </nz-form-label>
+    <nz-form-control [nzErrorTip]="errorTpl">
+      <input
+        [ngModelOptions]="{ standalone: true }"
+        nz-input
+        placeholder="Укажите наименование тэга"
+        [(ngModel)]="tagName"
+        required
+      />
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<ng-template #errorTpl let-control>
+  <ng-container *ngIf="control.hasError('required')">
+    Поле обязательно для заполнения
+  </ng-container>
+</ng-template>
