@@ -203,6 +203,11 @@ export class NotesRepository {
     }
     return this.notesService
       .getById(noteId)
-      .pipe(tap((note: INote) => this.notesStore.update(addEntities(note))));
+      .pipe(
+        tap(
+          (note: INote | null) =>
+            note && this.notesStore.update(addEntities(note))
+        )
+      );
   }
 }

@@ -75,7 +75,7 @@ export class NoteViewComponent {
     });
   }
 
-  public async deleteNote(): Promise<void> {
+  public deleteNote(): void {
     this.notesRepository
       .removeNote([this.note.id])
       .pipe(

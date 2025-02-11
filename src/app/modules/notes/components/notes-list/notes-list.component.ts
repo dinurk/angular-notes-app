@@ -73,7 +73,7 @@ export class NotesListComponent implements OnInit {
     });
   }
 
-  public async deleteChecked(): Promise<void> {
+  public deleteChecked(): void {
     this.notesRepository
       .removeNote(Array.from(this.checkedNotesIds))
       .pipe(
@@ -100,10 +100,7 @@ export class NotesListComponent implements OnInit {
    * @param note - заметка, на которую кликнул пользователь
    * @param event - событие клика мышью
    * */
-  public async onNoteCardClick(
-    noteId: string,
-    event: MouseEvent
-  ): Promise<void> {
+  public onNoteCardClick(noteId: string, event: MouseEvent): void {
     /** Простой клик на карточку открывает форму просмотра */
     if (!event.ctrlKey) {
       this.selectedNoteId = noteId;

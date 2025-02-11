@@ -55,7 +55,7 @@ export class TagFormComponent {
   }
 
   /** Сохранить данные формы (установить напоминание) */
-  public async save(): Promise<void> {
+  public save(): void {
     if (this.selectedTag) {
       this.tagsRepository
         .updateTag({ ...this.selectedTag!, name: this.tagName! })

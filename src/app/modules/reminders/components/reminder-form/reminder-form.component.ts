@@ -70,7 +70,7 @@ export class ReminderFormComponent implements OnInit {
   }
 
   /** Сохранить данные формы (установить напоминание) */
-  public async save(): Promise<void> {
+  public save(): void {
     const dateTimeString: string = DateTime.fromJSDate(this.reminderDate!)
       .toUTC()
       .toFormat('yyyy-MM-dd HH:mm:ss');

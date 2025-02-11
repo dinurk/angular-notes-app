@@ -14,6 +14,12 @@ export class NotesService {
 
   public constructor() {}
 
+  /**
+   * Получить страницу с заметками
+   * @param page - номер страницы
+   * @param limit - количество элементов на странице
+   * @param params - параметры запроса
+   * */
   public get(
     page: number,
     limit: number,
@@ -35,59 +41,22 @@ export class NotesService {
   }
 
   /**
-   * Получить заметки, у которых не задано напоминание
-   * @param page - Номер страницы
-   * @param limit - кличество элементов на странице
-   * @returns Observable с заметками, у которых не задано напоминание
+   * Получить заметку по Id
+   * @param id - Id заметки
+   * @returns Observable с заметкой или null
    * */
-  private getNotesWithoutReminders(
-    page: number,
-    limit: number
-  ): Observable<IDataPage<INote>> {
-    const notes = this.notes.filter((note: INote) => !note.reminderDateTime);
-
-    return of({
-      data: notes.slice((page - 1) * limit, page * limit),
-      total: notes.length,
-      perPage: limit,
-      lastPage: Math.ceil(notes.length / limit),
-      currentPage: page,
-    });
-  }
-
-  /**
-   * Получить заметки, у которых задано напоминание
-   * @param page - Номер страницы
-   * @param limit - кличество элементов на странице
-   * @returns Observable с заметками, у которых задано напоминание
-   * */
-  private getNotesWithReminders(
-    page: number,
-    limit: number
-  ): Observable<IDataPage<INote>> {
-    const notes = this.notes.filter((note: INote) => note.reminderDateTime);
-
-    return of({
-      data: notes.slice((page - 1) * limit, page * limit),
-      total: notes.length,
-      perPage: limit,
-      lastPage: Math.ceil(notes.length / limit),
-      currentPage: page,
-    });
-  }
-
-  public getById(id: string): Observable<INote> {
-    const note: INote | undefined = this.notes.find(
-      (item: INote) => item.id === id
-    );
-
-    if (!note) {
-      throw new Error(`item with id ${id} not found`);
-    }
+  public getById(id: string): Observable<INote | null> {
+    const note: INote | null =
+      this.notes.find((item: INote) => item.id === id) ?? null;
 
     return of(note);
   }
 
+  /**
+   * Добавить новую заметку
+   * @param item - добавляемая заметка
+   * @returns сохраненная заметка
+   */
   public add(item: Omit<INote, 'id'>): Observable<INote> {
     const newItem = { ...item, reminderDateTime: null, id: uuidv4() } as INote;
     this.notes.push(newItem);
@@ -95,33 +64,9 @@ export class NotesService {
   }
 
   /**
-   * Добавить напоминание
-   * @param noteId - Id заметки, для которой добавляем напоминание
-   * @param reminderDateTime - строка с датой и временем в UTC в формате tilmestamp (гггг-ММ-дд чч:мм:сс)
-   */
-  public setReminders(
-    noteIds: string[],
-    reminderDateTime: string
-  ): Observable<INote[]> {
-    const notes: INote[] = this.notes.filter((note: INote) =>
-      noteIds.includes(note.id)
-    );
-    notes.forEach((note: INote) => {
-      note.reminderDateTime = reminderDateTime;
-    });
-    return of(notes);
-  }
-
-  /**
-   * Удалить напоминание у заметки
-   * @param noteId - Id заметки
+   * Удалить заметки
+   * @param itemIds - Id заметок для удаления
    * */
-  public deleteReminder(noteId: string): Observable<void> {
-    const note = this.notes.find((note) => note.id === noteId);
-    note!.reminderDateTime = null;
-    return of(note as void);
-  }
-
   public remove(itemIds: string[]): Observable<void> {
     this.notes = this.notes.filter((item: INote) => !itemIds.includes(item.id));
     return of(undefined);
@@ -156,6 +101,7 @@ export class NotesService {
     return of(sameMonthNotes);
   }
 
+  /** Обновить заметку */
   public update(note: INote): Observable<INote> {
     const index: number = this.notes.findIndex(
       (item: INote) => item.id === note.id
@@ -165,5 +111,37 @@ export class NotesService {
     }
     this.notes[index] = { ...this.notes[index], ...note };
     return of(note);
+  }
+
+  /** Метод для эмуляции бэкенда */
+  private getNotesWithoutReminders(
+    page: number,
+    limit: number
+  ): Observable<IDataPage<INote>> {
+    const notes = this.notes.filter((note: INote) => !note.reminderDateTime);
+
+    return of({
+      data: notes.slice((page - 1) * limit, page * limit),
+      total: notes.length,
+      perPage: limit,
+      lastPage: Math.ceil(notes.length / limit),
+      currentPage: page,
+    });
+  }
+
+  /** Метод для эмуляции бэкенда */
+  private getNotesWithReminders(
+    page: number,
+    limit: number
+  ): Observable<IDataPage<INote>> {
+    const notes = this.notes.filter((note: INote) => note.reminderDateTime);
+
+    return of({
+      data: notes.slice((page - 1) * limit, page * limit),
+      total: notes.length,
+      perPage: limit,
+      lastPage: Math.ceil(notes.length / limit),
+      currentPage: page,
+    });
   }
 }
