@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NoteFormComponent } from './modules/notes/components';
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/notes',
+    pathMatch: 'full',
+  },
   {
     path: 'notes',
     loadChildren: () =>
