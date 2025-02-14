@@ -16,20 +16,6 @@
     </button>
   </nz-col>
 </div>
-<!-- <form nz-form nzLayout="horizontal">
-  <nz-space [nzSize]="16">
-    <nz-form-item *nzSpaceItem nz-form-item>
-      <nz-form-label>Отображать с </nz-form-label>
-      <nz-form-control>
-        <nz-date-picker></nz-date-picker>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item *nzSpaceItem>
-      <nz-form-label> до </nz-form-label>
-      <nz-form-control> <nz-date-picker></nz-date-picker> </nz-form-control
-    ></nz-form-item>
-  </nz-space>
-</form> -->
 
 <nz-space nzDirection="vertical" [nzSize]="16">
   <div *nzSpaceItem nz-row [nzGutter]="[16, 16]">
@@ -69,11 +55,13 @@
     </div>
   </div>
 
-  <nz-pagination
-    *nzSpaceItem
-    [nzPageIndex]="(paginationData$ | async)!.currentPage"
-    [nzTotal]="(paginationData$ | async)!.total"
-    [nzPageSize]="limit"
-    (nzPageIndexChange)="onChangePageNumber($event)"
-  ></nz-pagination>
+  <ng-container *ngIf="paginationData$ | async as paginationData">
+    <nz-pagination
+      *nzSpaceItem
+      [nzPageIndex]="paginationData.currentPage"
+      [nzTotal]="paginationData.total"
+      [nzPageSize]="limit"
+      (nzPageIndexChange)="onChangePageNumber($event)"
+    ></nz-pagination>
+  </ng-container>
 </nz-space>

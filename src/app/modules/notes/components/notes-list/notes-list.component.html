@@ -83,13 +83,15 @@
     </div>
   </div>
 
-  <nz-pagination
-    *nzSpaceItem
-    [nzPageIndex]="(paginationData$ | async)!.currentPage"
-    [nzTotal]="(paginationData$ | async)!.total"
-    [nzPageSize]="(paginationData$ | async)!.perPage"
-    (nzPageIndexChange)="onChangePageNumber($event)"
-  ></nz-pagination>
+  <ng-container *ngIf="paginationData$ | async as paginationData">
+    <nz-pagination
+      *nzSpaceItem
+      [nzPageIndex]="paginationData.currentPage"
+      [nzTotal]="paginationData.total"
+      [nzPageSize]="paginationData.perPage"
+      (nzPageIndexChange)="onChangePageNumber($event)"
+    ></nz-pagination>
+  </ng-container>
 </nz-space>
 
 <nz-alert

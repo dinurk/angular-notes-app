@@ -19,7 +19,6 @@
     #tagsTable
     [nzData]="(tags$ | async)!"
   >
-
     <tbody>
       <tr *ngFor="let item of tagsTable.data; trackBy: trackByFn">
         <td
@@ -32,11 +31,13 @@
     </tbody>
   </nz-table>
 
-  <nz-pagination
-    *nzSpaceItem
-    [nzPageIndex]="(paginationData$ | async)!.currentPage"
-    [nzTotal]="(paginationData$ | async)!.total"
-    [nzPageSize]="(paginationData$ | async)!.perPage"
-    (nzPageIndexChange)="onChangePageNumber($event)"
-  ></nz-pagination>
+  <ng-container *ngIf="paginationData$ | async as paginationData">
+    <nz-pagination
+      *nzSpaceItem
+      [nzPageIndex]="paginationData.currentPage"
+      [nzTotal]="paginationData.total"
+      [nzPageSize]="paginationData.perPage"
+      (nzPageIndexChange)="onChangePageNumber($event)"
+    ></nz-pagination>
+  </ng-container>
 </nz-space>
